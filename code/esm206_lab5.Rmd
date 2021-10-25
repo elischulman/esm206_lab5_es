@@ -67,3 +67,46 @@ output with in-line texts: the mean height of oak and pine trees were (X +- Y) a
 "two-sample t-test; t(df) = t-statistic, p=p.val"
 
 
+## Part 2: t-test with cars and mpg
+
+### look at data
+
+```{r}
+compact_suv <- mpg %>% 
+  filter(class %in% c('compact', 'suv'))
+
+unique(compact_suv$class)
+```
+```{r}
+ggplot(compact_suv, aes(x = cty)) +
+  geom_histogram(alpha = .9, bins = 12) +
+  facet_wrap(~ class)
+
+ggplot(compact_suv, aes(sample = cty)) +
+  geom_qq() +
+  geom_qq_line() +
+  facet_wrap(~ class)
+  
+```
+
+use 'pull()' to create a vector from a df. t.test() uses vetors, not dfs.
+
+```{r}
+compact_sample <- compact_suv %>% 
+  filter(class == 'compact') %>% 
+  pull(cty)
+
+suv_sample <- compact_suv %>% 
+  filter(class == 'suv') %>% 
+  pull(cty)
+
+```
+
+Test cty (city gas mileage) stats for compact and suv 
+ H0 : 
+ 
+```{r}
+t.test(compact_sample, suv_sample)
+```
+ 
+There is a significant difference in mean city gas mileage between compact and SUV cars
