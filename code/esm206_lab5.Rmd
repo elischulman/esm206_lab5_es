@@ -1,0 +1,21 @@
+---
+title: "lab 5"
+author: "Eli Schulman"
+date: "10/25/2021"
+output: 
+  html_document: 
+    toc: yes
+    theme: cerulean
+    code_folding: hide
+---
+### Overview / Steps
+- settings > Output Options >
+  - table of contents: includes links to the RMarkdown sections (based on number of #'s)
+  - changed theme to cerulean
+  - code_folding: enables collapsible code in the RMarkdown
+  
+# Setup
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
