@@ -6,16 +6,64 @@ output:
   html_document: 
     toc: yes
     theme: cerulean
-    code_folding: hide
+    # code_folding: hide
 ---
-### Overview / Steps
+### Overview of Setup and Setting Changes
 - settings > Output Options >
   - table of contents: includes links to the RMarkdown sections (based on number of #'s)
   - changed theme to cerulean
   - code_folding: enables collapsible code in the RMarkdown
   
-# Setup
+### Lab Overview - Confidence Intervals
+```{r setup, include = TRUE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(effsize)
 ```
+
+## Part 1: use 't.test()' to calculate confidence intervals
+
+### Example 1: 
+- single mock sample
+- in-line code referencing
+- t.test()
+
+```{r}
+# create mock sample
+otter_len <- c(30, 40, 55, 27, 38, 36, 39, 60, 69, 17)
+
+# find confidence interval
+otter_ci <- t.test(otter_len)
+
+# find sd
+otter_sd <- sd(otter_len)
+
+# interpreting confidence interval of (28,50): if we took a bunch of samples, we'd expect that 95% of them would contain the sample mean between 28 and 50.
+```
+
+#### use in-line reference to draw from the t.test() numbers. use  which makes the values in the text active
+Mean otter length is `r round(otter_ci$estimate, 2)` inches with a 95% confidence interval of 
+[`r signif(otter_ci$conf.int[1], 4)`, `r signif(otter_ci$conf.int[2], 4)`] inches.
+
+
+
+### Example 2: 
+- create mock sample and decide whether we can reject the null hypothesis (default null hypothesis is: these samples were drawn from populations with the same mean) (null hypotheses --> difference in means of population is equal to 0)
+- p.val of .15 and means of 5 and 7 --> if these samples were taken from pops with the same mean, theres a 15% chance that the difference in means would be 2 (7-5).
+- reject null hypothesis if p.val < .05
+
+#### Two sample t-test
+```{r}
+oak_trees <- c(20, 19, 23, 25, 21, 16)
+pine_trees <- c(30, 22, 27, 23, 35, 32)
+
+tree_t_test <- t.test(oak_trees, pine_trees)
+
+```
+
+output with in-line texts: the mean height of oak and pine trees were (X +- Y) and (X +- Y), respectively. The difference was not significant (t(`r tree_t_test$parameter`) = `r round(tree_t_test$statistic, 1)`, p = `r round(tree_t_test$p.value, 2)`)
+
+"two-sample t-test; t(df) = t-statistic, p=p.val"
+
+
